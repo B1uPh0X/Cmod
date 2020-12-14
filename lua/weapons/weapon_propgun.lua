@@ -1,5 +1,5 @@
 SWEP.PrintName			= "prop picker upper" -- This will be shown in the spawn menu, and in the weapon selection menu
-SWEP.Author			= "B1u" -- These two options will be shown when you have the weapon highlighted in the weapon selection menu
+SWEP.Author			= "B1uDe4D" -- These two options will be shown when you have the weapon highlighted in the weapon selection menu
 SWEP.Instructions		= "Right mouse to pick the prop, Left mouse to fire the prop!"
 
 SWEP.Spawnable = true 
@@ -50,6 +50,42 @@ function SWEP:ThrowProp(model_file)
     self:EmitSound(self.shootSound)
 
 
-    
+
+    if ( CLIENT ) then return end
+
+
+    local  ent = ents.Create("prop_physics")
+
+    if (not ent:IsValid ) then return end
+
+    ent:SetModel( model_file )
+
+
+    local aimvec = owner:GetAimVector()
+    local pos = aimvec *16
+    pos:Add( owner:EyePos )
+
+    ent:SetPos( pos )
+
+    ent:SetAngles( owner:EyeAngles() )
+    ent:Spawn()
+
+
+    local phys = ent:GetPhysicsObject()
+    if( not phys:IsValid() ) then ent:Remove() return end
+
+
+
+    aimvec:Mul( 100 )
+    aimvec:Add( VectorRand( -10, 10 ) )
+    phys:ApplyForceCenter( aimvec )
+
+
+    cleanup.Add(owner, "props", ent)
+
+    undo.Create("Thrown_chair")
+        undo.AddEntity( ent )
+        undo.SetPlayer( owner )
+    undo.Finish()
 end
 
