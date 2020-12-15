@@ -29,6 +29,8 @@ SWEP.WorldModel = "models/weapons/w_pistol.mdl"
 
 SWEP.ShootSound = Sound("Metal.SawbladeStick")
 
+local proppicked = "models/props/cs_office/Chair_office.mdl"
+
 -- Called when the left mouse button is pressed
 function SWEP:PrimaryAttack()
 	-- This weapon is 'automatic'. This function call below defines
@@ -36,7 +38,7 @@ function SWEP:PrimaryAttack()
 	self:SetNextPrimaryFire( CurTime() + 0.5 )	
 
 	-- Call 'ThrowChair' on self with this model
-	self:ThrowChair( "models/props/cs_office/Chair_office.mdl" )
+	self:ThrowChair( proppicked )
 end
  
 
@@ -46,7 +48,7 @@ function SWEP:SecondaryAttack()
 	-- players shouldn't be able to fire too fast
 	self:SetNextSecondaryFire( CurTime() + 0.1 )
 
-	self:ThrowChair( "models/props_c17/FurnitureChair001a.mdl" )
+	self:proppicked = GetModel()
 end
 
 -- A custom function we added. When you call this the player will fire a chair!
