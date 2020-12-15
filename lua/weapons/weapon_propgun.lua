@@ -48,7 +48,7 @@ function SWEP:SecondaryAttack()
 	-- players shouldn't be able to fire too fast
 	self:SetNextSecondaryFire( CurTime() + 0.1 )
 
-	self:proppicked = GetModel()
+	proppicked = ENT:GetModel( Ply:GetObserverTarget() )
 end
 
 -- A custom function we added. When you call this the player will fire a chair!
