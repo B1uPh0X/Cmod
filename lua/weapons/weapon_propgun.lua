@@ -51,9 +51,11 @@ function SWEP:SecondaryAttack()
 
 	local eyetrace = LocalPlayer():GetEyeTrace()
 
-	chat.AddText(eyetrace.Entity)
+	print( Entity( 1 ):GetEyeTrace().Entity)
 
-	proppicked = Entity:GetModel(eyetrace.Entity)
+	--if( eyetrace = !worldspawn) then proppicked = 
+	--Entity:GetModel(eyetrace.Entity) 
+	--return end
 end
 
 -- A custom function we added. When you call this the player will fire a chair!
