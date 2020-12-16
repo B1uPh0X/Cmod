@@ -29,7 +29,12 @@ SWEP.WorldModel = "models/weapons/w_pistol.mdl"
 
 SWEP.ShootSound = Sound("Metal.SawbladeStick")
 
-local string proppicked = "models/props/cs_office/Chair_office.mdl"
+local proppicked = "models/props/cs_office/Chair_office.mdl"
+
+local ply = LocalPlayer()
+
+local proplook = ply:GetEyeTrace()
+
 
 -- Called when the left mouse button is pressed
 function SWEP:PrimaryAttack()
@@ -49,13 +54,13 @@ function SWEP:SecondaryAttack()
 	self:SetNextSecondaryFire( CurTime() + 0.1 )
 
 
-	local eyetrace = LocalPlayer():GetEyeTrace()
+	if IsValid(proplook) then
+		if (proplook = !nil ) then
+			proppicked = proplook:GetModel()
+		end
+		
+	end
 
-	print( Entity( 1 ):GetEyeTrace().Entity)
-
-	--if( eyetrace = !worldspawn) then proppicked = 
-	--Entity:GetModel(eyetrace.Entity) 
-	--return end
 end
 
 -- A custom function we added. When you call this the player will fire a chair!
