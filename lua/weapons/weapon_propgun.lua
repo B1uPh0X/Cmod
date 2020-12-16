@@ -53,13 +53,21 @@ function SWEP:SecondaryAttack()
 	-- players shouldn't be able to fire too fast
 	self:SetNextSecondaryFire( CurTime() + 0.1 )
 
+	--print(proppicked)
+	--print(proplook)
+	--print(ply)
 
-	if IsValid(proplook) then
-		if (proplook = !nil ) then
+print( Entity( 1 ):GetEyeTrace().Entity )
+
+	--if IsValid(proplook) then
+		if (proplook == !nil ) then
 			proppicked = proplook:GetModel()
-		end
-		
-	end
+		end		
+	--end
+
+	--print(proppicked)
+--	print(proplook)
+	--print(ply)
 
 end
 
