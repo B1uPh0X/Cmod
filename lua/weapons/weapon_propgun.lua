@@ -42,7 +42,9 @@ function SWEP:PrimaryAttack()
 
 	print(proppicked)
 	-- Call 'ThrowChair' on self with this model
-	self:ThrowChair( proppicked )
+	self:ThrowChair( proppicked ) --err is here, porppicked not updated
+
+	print(proppicked)	
 end
  
 
@@ -56,23 +58,22 @@ function SWEP:SecondaryAttack()
 
 	local ply = LocalPlayer()
 	--print( LocalPlayer() )
-	proplook = Entity( 1 ):GetEyeTrace().Entity
-
+	proplook = Entity( 1 ):GetEyeTrace().Entity:GetModel()
 
 
 	print(proppicked)
 	print(proplook)
 	print(ply)
 
-	print( Entity( 1 ):GetEyeTrace().Entity )
+	print( proplook )
 
-	if IsValid(proplook) then
-		print("here")
-		--if (proplook == !nil ) then
-		proppicked = proplook:GetModel()
-		print("no here")
-		--end		
-	end
+	--if IsValid(proplook) then
+		--print("here")
+		if (proplook ~= nil ) then
+			proppicked = proplook
+			--print("no here")
+		end		
+	--end
 
 	print(proppicked)
 	print(proplook)
