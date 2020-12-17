@@ -30,10 +30,8 @@ SWEP.WorldModel = "models/weapons/w_pistol.mdl"
 SWEP.ShootSound = Sound("Metal.SawbladeStick")
 
 local proppicked = "models/props/cs_office/Chair_office.mdl"
+local proplook = proppicked
 
-local ply = LocalPlayer()
-
-local proplook = ply:GetEyeTrace()
 
 
 -- Called when the left mouse button is pressed
@@ -42,6 +40,7 @@ function SWEP:PrimaryAttack()
 	-- the rate of fire. Here we set it to shoot every 0.5 seconds.
 	self:SetNextPrimaryFire( CurTime() + 0.5 )	
 
+	print(proppicked)
 	-- Call 'ThrowChair' on self with this model
 	self:ThrowChair( proppicked )
 end
@@ -53,21 +52,31 @@ function SWEP:SecondaryAttack()
 	-- players shouldn't be able to fire too fast
 	self:SetNextSecondaryFire( CurTime() + 0.1 )
 
-	--print(proppicked)
-	--print(proplook)
-	--print(ply)
+	print("start")
 
-print( Entity( 1 ):GetEyeTrace().Entity )
+	local ply = LocalPlayer()
+	--print( LocalPlayer() )
+	proplook = Entity( 1 ):GetEyeTrace().Entity
 
-	--if IsValid(proplook) then
-		if (proplook == !nil ) then
-			proppicked = proplook:GetModel()
-		end		
-	--end
 
-	--print(proppicked)
---	print(proplook)
-	--print(ply)
+
+	print(proppicked)
+	print(proplook)
+	print(ply)
+
+	print( Entity( 1 ):GetEyeTrace().Entity )
+
+	if IsValid(proplook) then
+		print("here")
+		--if (proplook == !nil ) then
+		proppicked = proplook:GetModel()
+		print("no here")
+		--end		
+	end
+
+	print(proppicked)
+	print(proplook)
+	print(ply)
 
 end
 
