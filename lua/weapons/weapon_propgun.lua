@@ -29,57 +29,83 @@ SWEP.WorldModel = "models/weapons/w_pistol.mdl"
 
 SWEP.ShootSound = Sound("Metal.SawbladeStick")
 
-local proppicked = "models/props/cs_office/Chair_office.mdl"
-local proplook = proppicked
+local proppicked
+local proplook
 
 
+local proptable = {"0","1","2","3","4"}
+local propselected = 1
 
 -- Called when the left mouse button is pressed
 function SWEP:PrimaryAttack()
-	-- This weapon is 'automatic'. This function call below defines
-	-- the rate of fire. Here we set it to shoot every 0.5 seconds.
-	self:SetNextPrimaryFire( CurTime() + 0.5 )	
 
-	print(proppicked)
-	-- Call 'ThrowChair' on self with this model
-	self:ThrowChair( proppicked ) --err is here, porppicked not updated
+	self:SetNextPrimaryFire( CurTime() + .1 )
 
-	print(proppicked)	
+
+	chat.AddText(proptable[propselected])
+
+
+--[[
+	if(proppicked ~=nil) then
+
+		print(proppicked)
+		-- Call 'ThrowChair' on self with this model
+		self:ThrowChair( proppicked ) --err is here, porppicked not updated
+		print(proppicked)
+	
+	end
+
+	if(proppicked == nil) then
+		chat.AddText("nil value")
+	end
+--]]
 end
  
 
--- Called when the rightmouse button is pressed
+-- Called when the right mouse button is pressed
 function SWEP:SecondaryAttack()
-	-- Though the secondary fire isn't automatic
-	-- players shouldn't be able to fire too fast
-	self:SetNextSecondaryFire( CurTime() + 0.1 )
+	
+	self:SetNextSecondaryFire( CurTime() + .1 )
 
+	
+
+
+--[[
 	print("start")
 
-	local ply = LocalPlayer()
+	--local ply = LocalPlayer()
 	--print( LocalPlayer() )
-	proplook = Entity( 1 ):GetEyeTrace().Entity:GetModel()
-
+	if (IsValid(Entity( 1 ):GetEyeTrace())) then
+		proplook = Entity( 1 ):GetEyeTrace().Entity:GetModel()
+	end
 
 	print(proppicked)
-	print(proplook)
-	print(ply)
-
 	print( proplook )
 
-	--if IsValid(proplook) then
-		--print("here")
+	
 		if (proplook ~= nil ) then
 			proppicked = proplook
-			--print("no here")
 		end		
-	--end
 
 	print(proppicked)
 	print(proplook)
-	print(ply)
+	
+--]]
+end
+
+-- Called when Reload is pressed
+function SWEP:Reload()
+
+	--make this gui based, cycle is too sesitive with key binds
+
+	chat.AddText( proptable[propselected] ) 
+	propselected = propselected + 1
+		if (propselected > 5) then
+			propselected = 1
+		end
 
 end
+
 
 -- A custom function we added. When you call this the player will fire a chair!
 function SWEP:ThrowChair( model_file )
@@ -131,7 +157,7 @@ function SWEP:ThrowChair( model_file )
 	-- to adjust how fast we throw it.
 	-- Now that this is the last use of the aimvector vector we created,
 	-- we can directly modify it instead of creating another copy
-	aimvec:Mul( 100 )
+	aimvec:Mul( 10000 )
 	aimvec:Add( VectorRand( -10, 10 ) ) -- Add a random vector with elements [-10, 10)
 	phys:ApplyForceCenter( aimvec )
  
@@ -139,7 +165,7 @@ function SWEP:ThrowChair( model_file )
 	-- entity to the cleanup and undo lists. This is done like so.
 	cleanup.Add( owner, "props", ent )
  
-	undo.Create( "Thrown_Chair" )
+	undo.Create( "Thrown_Prop" )
 		undo.AddEntity( ent )
 		undo.SetPlayer( owner )
 	undo.Finish()
