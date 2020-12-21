@@ -49,8 +49,8 @@ function SWEP:PrimaryAttack()
 	if(proppicked ~=nil) then
 
 		print(proppicked)
-		-- Call 'ThrowChair' on self with this model
-		self:ThrowChair( proppicked ) --err is here, porppicked not updated
+		-- Call 'ThrowProp' on self with this model
+		self:ThrowProp( proppicked ) --err is here, porppicked not updated
 		print(proppicked)
 	
 	end
@@ -98,20 +98,41 @@ function SWEP:Reload()
 
 	--make this gui based, cycle is too sesitive with key binds
 
+	if not IsFirstTimePredicted() then return end
+
+	local delay = 0
+
+	if CurTime() < delay then return end
+
+	delay = CurTime() + 10
+
+	
+	local frame = vgui.Create("DFrame", "nil", "frame")
+	frame:SetSize(1000, 720)
+	frame:Center()
+	frame:SetVisible(true)
+	frame:MakePopup()
+
+	local button = vgui.Create("DButton", "frame", "button")
+	button:SetPos(10, 10)
+
+
+
+--[[
 	chat.AddText( proptable[propselected] ) 
 	propselected = propselected + 1
 		if (propselected > 5) then
 			propselected = 1
 		end
-
+--]]
 end
 
 
--- A custom function we added. When you call this the player will fire a chair!
-function SWEP:ThrowChair( model_file )
+-- A custom function. When you call this the player will fire a prop
+function SWEP:ThrowProp( model_file )
 	local owner = self:GetOwner()
 
-	-- Make sure the weapon is being held before trying to throw a chair
+	-- Make sure the weapon is being held before trying to throw a prop
 	if ( not owner:IsValid() ) then return end
 
 	-- Play the shoot sound we precached earlier!
@@ -152,17 +173,14 @@ function SWEP:ThrowChair( model_file )
 	local phys = ent:GetPhysicsObject()
 	if ( not phys:IsValid() ) then ent:Remove() return end
  
-	-- Now we apply the force - so the chair actually throws instead 
-	-- of just falling to the ground. You can play with this value here
-	-- to adjust how fast we throw it.
+	-- apply the force so the prop is thrown, instead of it falling
 	-- Now that this is the last use of the aimvector vector we created,
 	-- we can directly modify it instead of creating another copy
 	aimvec:Mul( 10000 )
 	aimvec:Add( VectorRand( -10, 10 ) ) -- Add a random vector with elements [-10, 10)
 	phys:ApplyForceCenter( aimvec )
  
-	-- Assuming we're playing in Sandbox mode we want to add this
-	-- entity to the cleanup and undo lists. This is done like so.
+	-- Assuming we're playing in Sandbox mode, adds the entity to the cleanup and undo lists.
 	cleanup.Add( owner, "props", ent )
  
 	undo.Create( "Thrown_Prop" )
