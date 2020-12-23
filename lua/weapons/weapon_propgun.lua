@@ -32,6 +32,8 @@ SWEP.ShootSound = Sound("Metal.SawbladeStick")
 local proppicked
 local proplook
 
+local delay = 0
+
 
 local proptable = {"0","1","2","3","4"}
 local propselected = 1
@@ -45,12 +47,12 @@ function SWEP:PrimaryAttack()
 	chat.AddText(proptable[propselected])
 
 
---[[
+--[[ works needs table rework
 	if(proppicked ~=nil) then
 
 		print(proppicked)
 		-- Call 'ThrowProp' on self with this model
-		self:ThrowProp( proppicked ) --err is here, porppicked not updated
+		self:ThrowProp( proppicked ) 
 		print(proppicked)
 	
 	end
@@ -70,7 +72,7 @@ function SWEP:SecondaryAttack()
 	
 
 
---[[
+--[[ works will need to be reworked for use with table
 	print("start")
 
 	--local ply = LocalPlayer()
@@ -100,20 +102,18 @@ function SWEP:Reload()
 
 	if not IsFirstTimePredicted() then return end
 
-	local delay = 0
 
 	if CurTime() < delay then return end
-
-	delay = CurTime() + 10
+	delay = CurTime() + 1
 
 	
-	local frame = vgui.Create("DFrame", "nil", "frame")
+	local frame = vgui.Create("DFrame", "nil", "topframe")
 	frame:SetSize(1000, 720)
 	frame:Center()
 	frame:SetVisible(true)
 	frame:MakePopup()
 
-	local button = vgui.Create("DButton", "frame", "button")
+	local button = vgui.Create("DButton", "topframe", "button 1")
 	button:SetPos(10, 10)
 
 
