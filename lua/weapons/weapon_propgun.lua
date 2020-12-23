@@ -107,14 +107,21 @@ function SWEP:Reload()
 	delay = CurTime() + 1
 
 	
-	local frame = vgui.Create("DFrame", "nil", "topframe")
+	local topframe = vgui.Create("DFrame", "nil")
 	frame:SetSize(1000, 720)
 	frame:Center()
 	frame:SetVisible(true)
 	frame:MakePopup()
 
-	local button = vgui.Create("DButton", "topframe", "button 1")
-	button:SetPos(10, 10)
+	local x,y = topframe:GetSize()
+
+	local button1 = vgui.Create("DButton", topframe)
+	button1:SetText("one")
+	button1:SetSize(50,75)
+	button1:SetPos(x - 10, 0)
+	
+	
+	
 
 
 
