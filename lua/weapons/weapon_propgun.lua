@@ -107,23 +107,53 @@ function SWEP:Reload()
 	delay = CurTime() + 1
 
 	
-	local topframe = vgui.Create("DFrame", "nil")
-	frame:SetSize(1000, 720)
-	frame:Center()
-	frame:SetVisible(true)
-	frame:MakePopup()
+	local botframe = vgui.Create("DFrame")
+	botframe:SetSize(325, 75)
+	botframe:Center()
+	botframe:SetVisible(true)
+	botframe:MakePopup()
 
-	local x,y = topframe:GetSize()
+	
 
-	local button1 = vgui.Create("DButton", topframe)
+	local button0 = vgui.Create("DButton", botframe)
+	button0:SetText("nilly")
+	button0:SetPos(25, 25)
+	button0:SetSize(50,50)
+	button0:SetVisible(true)
+	function button0:DoClick()
+		chat.AddText("Ouch that hurt!!")
+		botframe:Close()
+	end
+
+	local button1 = vgui.Create("DButton", botframe)
 	button1:SetText("one")
-	button1:SetSize(50,75)
-	button1:SetPos(x - 10, 0)
-	
-	
-	
+	button1:SetPos(100, 25)
+	button1:SetSize(50,50)
+	button1:SetVisible(true)
+	function button1.DoClick()
+		chat.AddText("aaaaaaaaaaa!!!")
+		botframe:Close()
+	end
 
+	local button2 = vgui.Create("DButton", botframe)
+	button2:SetText("due")
+	button2:SetPos(175, 25)
+	button2:SetSize(50,50)
+	button2:SetVisible(true)
+	function button2.DoClick()
+		chat.AddText("OwO")
+		botframe:Close()
+	end
 
+	local button3 = vgui.Create("Button", botframe)
+	button3:SetText("triangle")
+	button3:SetPos(250, 25)
+	button3:SetSize(50,50)
+	button3:SetVisible(true)
+	function button3.DoClick()
+		chat.AddText("fuck that shit hurts!!")
+		botframe:Close()
+	end
 
 --[[
 	chat.AddText( proptable[propselected] ) 
