@@ -69,10 +69,8 @@ function SWEP:SecondaryAttack()
 	
 	self:SetNextSecondaryFire( CurTime() + .1 )
 
-	
 
-
---[[ works will need to be reworked for use with table
+-- works will need to be reworked for use with table
 	print("start")
 
 	--local ply = LocalPlayer()
@@ -81,18 +79,15 @@ function SWEP:SecondaryAttack()
 		proplook = Entity( 1 ):GetEyeTrace().Entity:GetModel()
 	end
 
-	print(proppicked)
-	print( proplook )
-
-	
 		if (proplook ~= nil ) then
-			proppicked = proplook
+			proptable[propselected] = proplook
+			chat.AddText("value is set too " + proptable[propselected])
+		else
+			chat.AddText("err")		
 		end		
 
-	print(proppicked)
-	print(proplook)
 	
---]]
+
 end
 
 -- Called when Reload is pressed
@@ -122,6 +117,7 @@ function SWEP:Reload()
 	button0:SetVisible(true)
 	function button0:DoClick()
 		chat.AddText("Ouch that hurt!!")
+		propselected = 1
 		botframe:Close()
 	end
 
@@ -132,6 +128,7 @@ function SWEP:Reload()
 	button1:SetVisible(true)
 	function button1.DoClick()
 		chat.AddText("aaaaaaaaaaa!!!")
+		propselected = 2
 		botframe:Close()
 	end
 
@@ -142,6 +139,7 @@ function SWEP:Reload()
 	button2:SetVisible(true)
 	function button2.DoClick()
 		chat.AddText("OwO")
+		propselected = 3
 		botframe:Close()
 	end
 
@@ -152,6 +150,7 @@ function SWEP:Reload()
 	button3:SetVisible(true)
 	function button3.DoClick()
 		chat.AddText("fuck that shit hurts!!")
+		propselected = 4
 		botframe:Close()
 	end
 
