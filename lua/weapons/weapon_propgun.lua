@@ -35,7 +35,7 @@ local proplook
 local delay = 0
 
 
-local proptable = {"0","1","2","3","4"}
+local proptable = {"","","","",""}
 local propselected = 1
 
 -- Called when the left mouse button is pressed
@@ -45,22 +45,24 @@ function SWEP:PrimaryAttack()
 
 
 	chat.AddText(proptable[propselected])
+	chat.AddText(propselected)
+	chat.AddText("up here")
 
 
---[[ works needs table rework
-	if(proppicked ~=nil) then
 
-		print(proppicked)
+	if(proptable[propselected] ~=nil) then
+
+		print(proptable[propselected])
 		-- Call 'ThrowProp' on self with this model
-		self:ThrowProp( proppicked ) 
-		print(proppicked)
+		self:ThrowProp( proptable[propselected] ) 
+		print(proptable[propselected])
 	
 	end
 
-	if(proppicked == nil) then
+	if(proptable[propselected] == nil) then
 		chat.AddText("nil value")
 	end
---]]
+
 end
  
 
@@ -75,15 +77,18 @@ function SWEP:SecondaryAttack()
 
 	--local ply = LocalPlayer()
 	--print( LocalPlayer() )
-	if (IsValid(Entity( 1 ):GetEyeTrace())) then
-		proplook = Entity( 1 ):GetEyeTrace().Entity:GetModel()
+	if (IsValid(Entity( 1 ):GetEyeTrace().Entity)) then
+		proplook= Entity( 1 ):GetEyeTrace().Entity:GetModel()
+		chat.AddText("here")
 	end
+	chat.AddText("Wwhat about here??")
+chat.AddText(propselected)
+chat.AddText(proplook)
 
 		if (proplook ~= nil ) then
+			chat.AddText("or here?")
 			proptable[propselected] = proplook
-			chat.AddText("value is set too " + proptable[propselected])
-		else
-			chat.AddText("err")		
+			--chat.AddText("value at " + propselected + " set too " + proptable[propselected])	
 		end		
 
 	
@@ -212,7 +217,7 @@ function SWEP:ThrowProp( model_file )
 	-- apply the force so the prop is thrown, instead of it falling
 	-- Now that this is the last use of the aimvector vector we created,
 	-- we can directly modify it instead of creating another copy
-	aimvec:Mul( 10000 )
+	aimvec:Mul( 100 )
 	aimvec:Add( VectorRand( -10, 10 ) ) -- Add a random vector with elements [-10, 10)
 	phys:ApplyForceCenter( aimvec )
  
