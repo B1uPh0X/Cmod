@@ -35,13 +35,13 @@ local proplook
 local delay = 0
 
 
-local proptable = {"models/props_borealis/bluebarrel001.mdl","models/props_c17/oildrum001.mdl","models/props_junk/PlasticCrate01a.mdl","models/props_combine/breenglobe.mdl","models/props_lab/huladoll.mdl"}
-SWEP.propselected = 4
+SWEP.PropTable = {"models/props_borealis/bluebarrel001.mdl","models/props_c17/oildrum001.mdl","models/props_junk/PlasticCrate01a.mdl","models/props_combine/breenglobe.mdl","models/props_lab/huladoll.mdl"}
+SWEP.PropSelected = 1
 
 -- Called when the left mouse button is pressed
 function SWEP:PrimaryAttack()
 
-	print(SWEP.propselected)
+	print(self.PropSelected)
 
 	print("Primary Start")
 	
@@ -49,19 +49,19 @@ function SWEP:PrimaryAttack()
 
 --self:ThrowChair( "models/props/cs_office/Chair_office.mdl" )
 
-	print(proptable[SWEP.propselected])
-	print(SWEP.propselected)
+	print(self.PropTable[self.PropSelected])
+	print(self.PropSelected)
 
-	if(proptable[SWEP.propselected] ~=nil) then
+	if(self.PropTable[self.PropSelected] ~=nil) then
 
-		print(proptable[SWEP.propselected])
+		print(self.PropTable[self.PropSelected])
 		-- Call 'ThrowProp' on self with this model
-		self:ThrowProp( proptable[SWEP.propselected] )
-		print(proptable[SWEP.propselected])
+		self:ThrowProp( self.PropTable[self.PropSelected] )
+		print(self.PropTable[self.PropSelected])
 	
 	end
 
-	if(proptable[SWEP.propselected] == nil) then
+	if(self.PropTable[self.PropSelected] == nil) then
 		print("nil value")
 	end
 	
@@ -85,12 +85,12 @@ function SWEP:SecondaryAttack()
 		proplook= Entity( 1 ):GetEyeTrace().Entity:GetModel()
 	end
 
-	print(SWEP.propselected)
+	print(self.PropSelected)
 	print(proplook)
 
 	if (proplook ~= nil ) then
-		proptable[SWEP.propselected] = proplook
-		--chat.AddText("value at " + SWEP.propselected + " set too " + proptable[SWEP.propselected])	
+		self.PropTable[self.PropSelected] = proplook
+		--chat.AddText("value at " + SWEP.PropSelected + " set too " + self.PropTable[SWEP.PropSelected])	
 	end		
 	print("secondary end")
 end
@@ -124,9 +124,9 @@ function SWEP:Reload()
 	button0:SetVisible(true)
 	function button0:DoClick()
 		chat.AddText("Ouch that hurt!!")
-		print(SWEP.propselected)
-		SWEP.propselected = 1 --Dose not execute?
-		print(SWEP.propselected)
+		print(self.PropSelected)
+		self.PropSelected = 1 --Dose not execute?
+		print(self.PropSelected)
 		botframe:Close()
 	end
 
@@ -137,7 +137,7 @@ function SWEP:Reload()
 	button1:SetVisible(true)
 	function button1.DoClick()
 		chat.AddText("aaaaaaaaaaa!!!")
-		SWEP.propselected = 2
+		self.PropSelected = 2
 		botframe:Close()
 	end
 
@@ -147,8 +147,8 @@ function SWEP:Reload()
 	button2:SetSize(50,50)
 	button2:SetVisible(true)
 	function button2.DoClick()
-		chat.AddText("OwO")
-		SWEP.propselected = 3
+		chat.AddText("Ow0")
+		self.PropSelected = 3
 		botframe:Close()
 	end
 
@@ -159,7 +159,7 @@ function SWEP:Reload()
 	button3:SetVisible(true)
 	function button3.DoClick()
 		chat.AddText("fuck that shit hurts!!")
-		SWEP.propselected = 4
+		self.PropSelected = 4
 		botframe:Close()
 	end
 
@@ -170,15 +170,15 @@ function SWEP:Reload()
 	button3:SetVisible(true)
 	function button3.DoClick()
 		chat.AddText("hehe that tickles!")
-		SWEP.propselected = 5
+		self.PropSelected = 5
 		botframe:Close()
 	end
 
 --[[
-	chat.AddText( proptable[SWEP.propselected] ) 
-	SWEP.propselected = SWEP.propselected + 1
-		if (SWEP.propselected > 5) then
-			SWEP.propselected = 1
+	chat.AddText( self.PropTable[SWEP.PropSelected] ) 
+	SWEP.PropSelected = SWEP.PropSelected + 1
+		if (SWEP.PropSelected > 5) then
+			SWEP.PropSelected = 1
 		end
 --]]
 print("reload end")
@@ -186,8 +186,10 @@ end
 
 
 -- A custom function. When you call this the player will fire a prop
-function SWEP:ThrowProp( model_file )
+function SWEP:ThrowProp( ModelSelected )
 	print("throw start")
+	print(ModelSelected)
+	print(self.PropTable[ModelSelected])
 	local owner = self:GetOwner()
 
 	-- Make sure the weapon is being held before trying to throw a chair
@@ -208,7 +210,7 @@ function SWEP:ThrowProp( model_file )
 	if ( not ent:IsValid() ) then return end
 
 	-- Set the entity's model to the passed in model
-	ent:SetModel( model_file )
+	ent:SetModel( self.PropTable[ModelSelected])
 
 	-- This is the same as owner:EyePos() + (self.Owner:GetAimVector() * 16)
 	-- but the vector methods prevent duplicitous objects from being created
