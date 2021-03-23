@@ -35,34 +35,38 @@ local proplook
 local delay = 0
 
 
-local proptable = {"","","","",""}
-local propselected = 1
+local proptable = {"models/props_borealis/bluebarrel001.mdl","models/props_c17/oildrum001.mdl","models/props_junk/PlasticCrate01a.mdl","models/props_combine/breenglobe.mdl","models/props_lab/huladoll.mdl"}
+SWEP.propselected = 4
 
 -- Called when the left mouse button is pressed
 function SWEP:PrimaryAttack()
 
-	self:SetNextPrimaryFire( CurTime() + .1 )
+	print(SWEP.propselected)
 
+	print("Primary Start")
+	
+	self:SetNextPrimaryFire( CurTime() + .5 )
 
-	chat.AddText(proptable[propselected])
-	chat.AddText(propselected)
-	chat.AddText("up here")
+--self:ThrowChair( "models/props/cs_office/Chair_office.mdl" )
 
+	print(proptable[SWEP.propselected])
+	print(SWEP.propselected)
 
+	if(proptable[SWEP.propselected] ~=nil) then
 
-	if(proptable[propselected] ~=nil) then
-
-		print(proptable[propselected])
+		print(proptable[SWEP.propselected])
 		-- Call 'ThrowProp' on self with this model
-		self:ThrowProp( proptable[propselected] ) 
-		print(proptable[propselected])
+		self:ThrowProp( proptable[SWEP.propselected] )
+		print(proptable[SWEP.propselected])
 	
 	end
 
-	if(proptable[propselected] == nil) then
-		chat.AddText("nil value")
+	if(proptable[SWEP.propselected] == nil) then
+		print("nil value")
 	end
-
+	
+	print("Primary end")
+	
 end
  
 
@@ -73,30 +77,28 @@ function SWEP:SecondaryAttack()
 
 
 -- works will need to be reworked for use with table
-	print("start")
+	print("secondary start")
 
 	--local ply = LocalPlayer()
 	--print( LocalPlayer() )
 	if (IsValid(Entity( 1 ):GetEyeTrace().Entity)) then
 		proplook= Entity( 1 ):GetEyeTrace().Entity:GetModel()
-		chat.AddText("here")
 	end
-	chat.AddText("Wwhat about here??")
-chat.AddText(propselected)
-chat.AddText(proplook)
 
-		if (proplook ~= nil ) then
-			chat.AddText("or here?")
-			proptable[propselected] = proplook
-			--chat.AddText("value at " + propselected + " set too " + proptable[propselected])	
-		end		
+	print(SWEP.propselected)
+	print(proplook)
 
-	
-
+	if (proplook ~= nil ) then
+		proptable[SWEP.propselected] = proplook
+		--chat.AddText("value at " + SWEP.propselected + " set too " + proptable[SWEP.propselected])	
+	end		
+	print("secondary end")
 end
 
 -- Called when Reload is pressed
 function SWEP:Reload()
+
+	print("reload start")
 
 	--make this gui based, cycle is too sesitive with key binds
 
@@ -108,7 +110,7 @@ function SWEP:Reload()
 
 	
 	local botframe = vgui.Create("DFrame")
-	botframe:SetSize(325, 75)
+	botframe:SetSize(400, 75)
 	botframe:Center()
 	botframe:SetVisible(true)
 	botframe:MakePopup()
@@ -122,7 +124,9 @@ function SWEP:Reload()
 	button0:SetVisible(true)
 	function button0:DoClick()
 		chat.AddText("Ouch that hurt!!")
-		propselected = 1
+		print(SWEP.propselected)
+		SWEP.propselected = 1 --Dose not execute?
+		print(SWEP.propselected)
 		botframe:Close()
 	end
 
@@ -133,7 +137,7 @@ function SWEP:Reload()
 	button1:SetVisible(true)
 	function button1.DoClick()
 		chat.AddText("aaaaaaaaaaa!!!")
-		propselected = 2
+		SWEP.propselected = 2
 		botframe:Close()
 	end
 
@@ -144,7 +148,7 @@ function SWEP:Reload()
 	button2:SetVisible(true)
 	function button2.DoClick()
 		chat.AddText("OwO")
-		propselected = 3
+		SWEP.propselected = 3
 		botframe:Close()
 	end
 
@@ -155,25 +159,38 @@ function SWEP:Reload()
 	button3:SetVisible(true)
 	function button3.DoClick()
 		chat.AddText("fuck that shit hurts!!")
-		propselected = 4
+		SWEP.propselected = 4
+		botframe:Close()
+	end
+
+	local button3 = vgui.Create("Button", botframe)
+	button3:SetText("quesdeia")
+	button3:SetPos(325, 25)
+	button3:SetSize(50,50)
+	button3:SetVisible(true)
+	function button3.DoClick()
+		chat.AddText("hehe that tickles!")
+		SWEP.propselected = 5
 		botframe:Close()
 	end
 
 --[[
-	chat.AddText( proptable[propselected] ) 
-	propselected = propselected + 1
-		if (propselected > 5) then
-			propselected = 1
+	chat.AddText( proptable[SWEP.propselected] ) 
+	SWEP.propselected = SWEP.propselected + 1
+		if (SWEP.propselected > 5) then
+			SWEP.propselected = 1
 		end
 --]]
+print("reload end")
 end
 
 
 -- A custom function. When you call this the player will fire a prop
 function SWEP:ThrowProp( model_file )
+	print("throw start")
 	local owner = self:GetOwner()
 
-	-- Make sure the weapon is being held before trying to throw a prop
+	-- Make sure the weapon is being held before trying to throw a chair
 	if ( not owner:IsValid() ) then return end
 
 	-- Play the shoot sound we precached earlier!
@@ -214,19 +231,24 @@ function SWEP:ThrowProp( model_file )
 	local phys = ent:GetPhysicsObject()
 	if ( not phys:IsValid() ) then ent:Remove() return end
  
-	-- apply the force so the prop is thrown, instead of it falling
+	-- Now we apply the force - so the chair actually throws instead 
+	-- of just falling to the ground. You can play with this value here
+	-- to adjust how fast we throw it.
 	-- Now that this is the last use of the aimvector vector we created,
 	-- we can directly modify it instead of creating another copy
 	aimvec:Mul( 100 )
 	aimvec:Add( VectorRand( -10, 10 ) ) -- Add a random vector with elements [-10, 10)
 	phys:ApplyForceCenter( aimvec )
  
-	-- Assuming we're playing in Sandbox mode, adds the entity to the cleanup and undo lists.
+	-- Assuming we're playing in Sandbox mode we want to add this
+	-- entity to the cleanup and undo lists. This is done like so.
 	cleanup.Add( owner, "props", ent )
  
 	undo.Create( "Thrown_Prop" )
 		undo.AddEntity( ent )
 		undo.SetPlayer( owner )
 	undo.Finish()
+
+	print("throw end")
 end
 
