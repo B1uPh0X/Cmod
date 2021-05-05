@@ -36,9 +36,9 @@ local delay = 0
 
 SWEP.PropTable = {"models/props_borealis/bluebarrel001.mdl","models/props_c17/oildrum001.mdl","models/props_junk/PlasticCrate01a.mdl","models/props_combine/breenglobe.mdl","models/props_lab/huladoll.mdl"}
 SWEP.PropSelected = 1
-SWEP.PropPicked = "models/props/cs_office/Chair_office.mdl"
+SWEP.PropPicked = "e"
 
-util.AddNetworkString("newVar")
+
 
 -- Called when the left mouse button is pressed
 function SWEP:PrimaryAttack()
@@ -52,7 +52,9 @@ function SWEP:PrimaryAttack()
 	
 		self.PropPicked = self.PropTable[self.PropSelected]
 
-		ctsupdate(self.PropPicked)
+		net.Start("newVar")
+		net.WriteString(self.PropPicked)
+		net.SendToServer()
 
 		-- Call 'ThrowProp' on self with this model
 		self:ThrowProp( self.PropPicked )
@@ -67,19 +69,7 @@ function SWEP:PrimaryAttack()
 	
 end
  
---function that pushes client side vars to server side.
-function ctsupdate( newString )
-
-	net.Start("newVar")
-	net.WriteString(newString)
-	net.SendToServer()
-
-
-	net.Receive("newVar", function(len, ply)
-		ModelSelected = net.ReadString()
-	end)
-
-end
+--function ctsupdate( newVar)
 
 
 
@@ -89,7 +79,7 @@ end
 -- Called when the right mouse button is pressed
 function SWEP:SecondaryAttack()
 	
-	self:SetNextSecondaryFire( CurTime() + .1 )
+	self:SetNextSecondaryFire( CurTime() + 1 )
 
 
 -- works will need to be reworked for use with table
@@ -217,7 +207,7 @@ function SWEP:ThrowProp( ModelSelected )
 	-- We play the sound above on the client due to prediction.
 	-- ( if we didn't they would feel a ping delay during multiplayer )
 	if ( CLIENT ) then return end
-
+--[[
 	-- Create a prop_physics entity
 	local ent = ents.Create( "prop_physics" )
 
@@ -267,5 +257,6 @@ function SWEP:ThrowProp( ModelSelected )
 	undo.Finish()
 
 	print("throw end")
+	]]--
 end
 
