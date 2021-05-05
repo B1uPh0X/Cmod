@@ -29,7 +29,6 @@ SWEP.WorldModel = "models/weapons/w_pistol.mdl"
 
 SWEP.ShootSound = Sound("Metal.SawbladeStick")
 
-local proppicked
 local proplook
 
 local delay = 0
@@ -37,6 +36,9 @@ local delay = 0
 
 SWEP.PropTable = {"models/props_borealis/bluebarrel001.mdl","models/props_c17/oildrum001.mdl","models/props_junk/PlasticCrate01a.mdl","models/props_combine/breenglobe.mdl","models/props_lab/huladoll.mdl"}
 SWEP.PropSelected = 1
+SWEP.PropPicked = "models/props/cs_office/Chair_office.mdl"
+
+
 
 -- Called when the left mouse button is pressed
 function SWEP:PrimaryAttack()
@@ -44,20 +46,46 @@ function SWEP:PrimaryAttack()
 	print(self.PropSelected)
 
 	print("Primary Start")
+
+	self.PropPicked = self.PropTable[self.PropSelected]
 	
 	self:SetNextPrimaryFire( CurTime() + .5 )
 
---self:ThrowChair( "models/props/cs_office/Chair_office.mdl" )
+	--self:ThrowChair( "models/props/cs_office/Chair_office.mdl" )
 
 	print(self.PropTable[self.PropSelected])
 	print(self.PropSelected)
 
 	if(self.PropTable[self.PropSelected] ~=nil) then
-
+		
 		print(self.PropTable[self.PropSelected])
+		
+		print(self.PropPicked)
+		self.PropPicked = self.PropTable[self.PropSelected]
 		-- Call 'ThrowProp' on self with this model
-		self:ThrowProp( self.PropTable[self.PropSelected] )
-		print(self.PropTable[self.PropSelected])
+
+		--start client
+
+		util.AddNetworkString("PropLuanch")
+
+		net.Start("PropLuanch")
+		net.WriteString(self.PropPicked)
+		net.SendToServer()
+		--end client
+
+		--start server shit
+
+		
+
+		net.Receive("PropLuanch", function ( len, ply)
+			local PropPicked = net.ReadString()
+		end)
+
+		--end server shit
+
+
+		self:ThrowProp( self.PropPicked )
+		print(self.PropPicked)
 	
 	end
 
@@ -189,7 +217,6 @@ end
 function SWEP:ThrowProp( ModelSelected )
 	print("throw start")
 	print(ModelSelected)
-	print(self.PropTable[ModelSelected])
 	local owner = self:GetOwner()
 
 	-- Make sure the weapon is being held before trying to throw a chair
@@ -210,7 +237,7 @@ function SWEP:ThrowProp( ModelSelected )
 	if ( not ent:IsValid() ) then return end
 
 	-- Set the entity's model to the passed in model
-	ent:SetModel( self.PropTable[ModelSelected])
+	ent:SetModel( ModelSelected )
 
 	-- This is the same as owner:EyePos() + (self.Owner:GetAimVector() * 16)
 	-- but the vector methods prevent duplicitous objects from being created
