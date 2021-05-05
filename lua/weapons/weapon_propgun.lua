@@ -38,54 +38,24 @@ SWEP.PropTable = {"models/props_borealis/bluebarrel001.mdl","models/props_c17/oi
 SWEP.PropSelected = 1
 SWEP.PropPicked = "models/props/cs_office/Chair_office.mdl"
 
-
+util.AddNetworkString("newVar")
 
 -- Called when the left mouse button is pressed
 function SWEP:PrimaryAttack()
-
-	print(self.PropSelected)
-
-	print("Primary Start")
-
-	self.PropPicked = self.PropTable[self.PropSelected]
 	
 	self:SetNextPrimaryFire( CurTime() + .5 )
 
 	--self:ThrowChair( "models/props/cs_office/Chair_office.mdl" )
 
-	print(self.PropTable[self.PropSelected])
-	print(self.PropSelected)
 
 	if(self.PropTable[self.PropSelected] ~=nil) then
-		
-		print(self.PropTable[self.PropSelected])
-		
-		print(self.PropPicked)
+	
 		self.PropPicked = self.PropTable[self.PropSelected]
+
+		ctsupdate(self.PropPicked)
+
 		-- Call 'ThrowProp' on self with this model
-
-		--start client
-
-		util.AddNetworkString("PropLuanch")
-
-		net.Start("PropLuanch")
-		net.WriteString(self.PropPicked)
-		net.SendToServer()
-		--end client
-
-		--start server shit
-
-		
-
-		net.Receive("PropLuanch", function ( len, ply)
-			local PropPicked = net.ReadString()
-		end)
-
-		--end server shit
-
-
 		self:ThrowProp( self.PropPicked )
-		print(self.PropPicked)
 	
 	end
 
@@ -97,6 +67,24 @@ function SWEP:PrimaryAttack()
 	
 end
  
+--function that pushes client side vars to server side.
+function ctsupdate( newString )
+
+	net.Start("newVar")
+	net.WriteString(newString)
+	net.SendToServer()
+
+
+	net.Receive("newVar", function(len, ply)
+		ModelSelected = net.ReadString()
+	end)
+
+end
+
+
+
+
+
 
 -- Called when the right mouse button is pressed
 function SWEP:SecondaryAttack()
