@@ -1,5 +1,4 @@
 --serverside code for the propgun
-
 	--opens the network string
     util.AddNetworkString("newVar")
 
@@ -11,12 +10,9 @@
 		end
 	end)
 
-
-
     function ThrowProp( ModelSelected , plyer )
 
 	if (IsFirstTimePredicted()) then
-	
 		--creates a valid entity with the prop model that was passed from client side
 		local owner = plyer
 		local ent = ents.Create( "prop_physics" )
@@ -28,22 +24,22 @@
 		local aimvec = owner:GetAimVector()
 		local pos = aimvec * 16 
 		pos:Add( owner:EyePos() )
-		ent:SetPos( pos)
+		ent:SetPos( pos )
 		ent:SetAngles( owner:EyeAngles() )
 		ent:Spawn()
 	
-		-- adds 
+		-- adds physics to the prop
 		local phys = ent:GetPhysicsObject()
 		if ( not phys:IsValid() ) then ent:Remove() return end
 	
-		-- Applies force to the prop so it is luanched instead of it dropping to the 
-		aimvec:Mul( 1000)
+		-- Applies force to the prop so it is luanched instead of it dropping to the ground
+		aimvec:Mul( 100000 )
 		aimvec:Add( VectorRand( -10, 10 ) ) -- Add a random vector with elements [-10, 10)
 		phys:ApplyForceCenter( aimvec )
 	
-		-- adds the prop that was luanched to the undo, so the palyer can 
+		-- adds the prop that was luanched to the undo, so the player can use the cleanup functionality that the game has.
 		cleanup.Add( owner, "props", ent )
-	
+
 		undo.Create( "Thrown_Prop" )
 			undo.AddEntity( ent )
 			undo.SetPlayer( owner )

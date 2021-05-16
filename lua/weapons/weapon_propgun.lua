@@ -1,5 +1,5 @@
-SWEP.PrintName			= "prop picker upper" -- This will be shown in the spawn menu, and in the weapon selection menu
-SWEP.Author			= "B1uu" -- These two options will be shown when you have the weapon highlighted in the weapon selection menu
+SWEP.PrintName			= "prop picker upper ander thrower 9000er" -- This will be shown in the spawn menu, and in the weapon selection menu
+SWEP.Author			= "REDACTED" -- These two options will be shown when you have the weapon highlighted in the weapon selection menu
 SWEP.Instructions		= "Right mouse to pick the prop, Left mouse to fire the prop!"
 
 --the following lines of code set the porperties of the item
@@ -36,10 +36,10 @@ SWEP.ShootSound = Sound("Metal.SawbladeStick")
 local proplook
 local delay = 0
 
-SWEP.PropTable = {"models/props_borealis/bluebarrel001.mdl","models/props_c17/oildrum001.mdl","models/props_junk/PlasticCrate01a.mdl","models/props_combine/breenglobe.mdl","models/props_lab/huladoll.mdl"}
+SWEP.PropTable = {"models/props_borealis/bluebarrel001.mdl","models/props_c17/oildrum001.mdl","models/props_junk/PlasticCrate01a.mdl",
+					"models/props_combine/breenglobe.mdl","models/props_lab/huladoll.mdl"}
 SWEP.PropSelected = nil
 SWEP.PropPicked = "e" --Needed to be intilized as a string type
-
 
 
 -- Called when the left mouse button is pressed, the primary function of the SWEP
@@ -77,7 +77,6 @@ function SWEP:PrimaryAttack()
 	
 end
 
-
 -- Called when the right mouse button is pressed
 function SWEP:SecondaryAttack()
 
@@ -107,9 +106,7 @@ end
 
 -- Called when Reload is pressed
 function SWEP:Reload()
-
 	--prevets multiple prompts from appearing simultaneously
-	
 	if(not CLIENT) then
 		return
 	end
@@ -140,7 +137,7 @@ function SWEP:Reload()
 	end
 
 	local button2 = vgui.Create("DButton", botframe)
-	button2:SetText("one")
+	button2:SetText("two")
 	button2:SetPos(100, 25)
 	button2:SetSize(50,50)
 	button2:SetVisible(true)
@@ -151,7 +148,7 @@ function SWEP:Reload()
 	end
 
 	local button3 = vgui.Create("DButton", botframe)
-	button3:SetText("due")
+	button3:SetText("three")
 	button3:SetPos(175, 25)
 	button3:SetSize(50,50)
 	button3:SetVisible(true)
@@ -162,7 +159,7 @@ function SWEP:Reload()
 	end
 
 	local button4 = vgui.Create("Button", botframe)
-	button4:SetText("triangle")
+	button4:SetText("four")
 	button4:SetPos(250, 25)
 	button4:SetSize(50,50)
 	button4:SetVisible(true)
@@ -173,7 +170,7 @@ function SWEP:Reload()
 	end
 
 	local button5 = vgui.Create("Button", botframe)
-	button5:SetText("quesdeia")
+	button5:SetText("five")
 	button5:SetPos(325, 25)
 	button5:SetSize(50,50)
 	button5:SetVisible(true)
@@ -182,9 +179,7 @@ function SWEP:Reload()
 		self.PropSelected = 5
 		botframe:Close()
 	end
-
 end
-
 
 -- This the function that will actually throw the prop, the server has its own version of this function, a prop model file is passed in.
 function SWEP:ThrowProp( ModelSelected )
